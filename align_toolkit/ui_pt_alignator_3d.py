@@ -71,12 +71,20 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
         row.operator("alignator.distribute_3d", text="Z", icon_value=distribute_Z).option = 'Z'
 
 # Context menu popover
-def popover_contextmenu(self, context):
-    # prefs = context.preferences.addons[__package__].preferences
-    # if prefs.pb_enable_context_menu:
-    layout = self.layout
-    layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
-    layout.separator()
+def popover_main_menu(self, context):
+    prefs = bpy.context.preferences.addons[__package__].preferences
+    if prefs.show_in_3dview_main_menu:
+        self.layout.separator()
+        if context.area.show_menus:
+            self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
+        else:
+            self.layout.popover("ALI_PT_Alignator_3D", text="Align Toolkit", icon_value=align_center)
+        self.layout.separator()
+
+def popover_tool_header(self, context):
+    prefs = bpy.context.preferences.addons[__package__].preferences
+    if prefs.show_in_3dview_tool_header:
+        self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
 
 ##############################################
 # REGISTER/UNREGISTER
@@ -84,8 +92,10 @@ def popover_contextmenu(self, context):
 def register():
     assign_icons()
     bpy.utils.register_class(ALI_PT_Alignator_3D)
-    bpy.types.VIEW3D_MT_editor_menus.append(popover_contextmenu)
+    bpy.types.VIEW3D_MT_editor_menus.append(popover_main_menu)
+    bpy.types.VIEW3D_HT_tool_header.append(popover_tool_header)
     
 def unregister():
     bpy.utils.unregister_class(ALI_PT_Alignator_3D)
-    bpy.types.VIEW3D_MT_editor_menus.remove(popover_contextmenu)
+    bpy.types.VIEW3D_MT_editor_menus.remove(popover_main_menu)
+    bpy.types.VIEW3D_HT_tool_header.remove(popover_tool_header)

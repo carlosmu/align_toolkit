@@ -19,6 +19,7 @@ from . import ot_alignator_3d
 from . import ot_distributor_3d
 from . import ui_pt_alignator_3d
 from . import ui_icons
+from . import ui_user_prefs
 
 bl_info = {
     "name": "Align Toolkit",
@@ -41,9 +42,11 @@ def register():
     ot_alignator_3d.register()
     ot_distributor_3d.register()
     ui_pt_alignator_3d.register()
+    ui_user_prefs.register()
 
 def unregister():
     ui_icons.unload_icons()
     ot_alignator_3d.unregister()
     ot_distributor_3d.unregister()
     ui_pt_alignator_3d.unregister()
+    ui_user_prefs.unregister()
