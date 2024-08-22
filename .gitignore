@@ -1,0 +1,15 @@
+# Exclude pycache folder and extension
+/__pycache__/
+*.pyc
+
+*.png~
+*.jpg~
+*.jpeg~
+
+# Exclude testing folder
+/testing/
+
+# Development releases
+*_alpha*
+*_beta*
+releases/_OLD

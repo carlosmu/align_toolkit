@@ -1,0 +1,14 @@
+# Dont change this, is not referred to addon version
+schema_version = "1.0.0"
+
+id = "align_toolkit"
+version = "1.1.0"
+name = "Align Toolkit"
+tagline = "Align and Distribute objects in a easy and intuitive way"
+maintainer = "carlosmu | carlos.damian.munoz@gmail.com"
+type = "add-on"
+tags = ["3D View", "Modeling", "Object", "Scene", "User Interface"]
+website = "https://blendermarket.com/products/align-toolkit"
+
+blender_version_min = "3.6.0"
+license = ["SPDX:GPL-3.0-or-later",]
