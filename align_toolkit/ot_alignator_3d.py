@@ -28,23 +28,23 @@ class ALI_OT_align_3d(bpy.types.Operator):
 
     def execute(self, context):
         if self.option == 'X_MINIMUM':
-            fn.align_objects(alignment="min",  align_by="bounding_box", axis="x")
+            fn.align_objects(alignment="min",  align_by="mesh_bounds", axis="x")
         elif self.option == 'X_CENTER':
-            fn.align_objects(alignment="center",  align_by="bounding_box", axis="x")
+            fn.align_objects(alignment="center",  align_by="mesh_bounds", axis="x")
         elif self.option == 'X_MAXIMUM':
-            fn.align_objects(alignment="max",  align_by="bounding_box", axis="x")
+            fn.align_objects(alignment="max",  align_by="mesh_bounds", axis="x")
         elif self.option == 'Y_MINIMUM':
-            fn.align_objects(alignment="min",  align_by="bounding_box", axis="y")
+            fn.align_objects(alignment="min",  align_by="mesh_bounds", axis="y")
         elif self.option == 'Y_CENTER':
-            fn.align_objects(alignment="center",  align_by="bounding_box", axis="y")
+            fn.align_objects(alignment="center",  align_by="mesh_bounds", axis="y")
         elif self.option == 'Y_MAXIMUM':
-            fn.align_objects(alignment="max",  align_by="bounding_box", axis="y")
+            fn.align_objects(alignment="max",  align_by="mesh_bounds", axis="y")
         elif self.option == 'Z_MINIMUM':
-            fn.align_objects(alignment="min",  align_by="bounding_box", axis="z")
+            fn.align_objects(alignment="min",  align_by="mesh_bounds", axis="z")
         elif self.option == 'Z_CENTER':
-            fn.align_objects(alignment="center",  align_by="bounding_box", axis="z")
+            fn.align_objects(alignment="center",  align_by="mesh_bounds", axis="z")
         else:
-            fn.align_objects(alignment="max",  align_by="bounding_box", axis="z")
+            fn.align_objects(alignment="max",  align_by="mesh_bounds", axis="z")
         
         return{'FINISHED'}
 

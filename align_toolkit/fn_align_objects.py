@@ -9,7 +9,7 @@ def align_objects(alignment="center", align_by="origin", axis="x"):
         print("No objects selected")
         return
     
-    # Función para obtener la posición en el eje especificado basado en el origen o bounding box
+    # Función para obtener la posición en el eje especificado basado en el origen, bounding box o mesh bounds
     def get_position(obj, axis):
         if align_by == "origin":
             return getattr(obj.location, axis)
@@ -25,11 +25,22 @@ def align_objects(alignment="center", align_by="origin", axis="x"):
             elif axis == "z":
                 min_pos = min([v.z for v in bounds_world])
                 max_pos = max([v.z for v in bounds_world])
-            else:
-                raise ValueError("Invalid axis: should be 'x', 'y', or 'z'")
+            return min_pos if alignment == "min" else max_pos if alignment == "max" else (min_pos + max_pos) / 2
+        elif align_by == "mesh_bounds":
+            mesh = obj.data
+            vertices = [obj.matrix_world @ v.co for v in mesh.vertices]
+            if axis == "x":
+                min_pos = min([v.x for v in vertices])
+                max_pos = max([v.x for v in vertices])
+            elif axis == "y":
+                min_pos = min([v.y for v in vertices])
+                max_pos = max([v.y for v in vertices])
+            elif axis == "z":
+                min_pos = min([v.z for v in vertices])
+                max_pos = max([v.z for v in vertices])
             return min_pos if alignment == "min" else max_pos if alignment == "max" else (min_pos + max_pos) / 2
         else:
-            raise ValueError("align_by must be 'origin' or 'bounding_box'")
+            raise ValueError("align_by must be 'origin', 'bounding_box', or 'mesh_bounds'")
     
     # Alineación para un solo eje
     def align_single_axis(axis):
@@ -49,17 +60,29 @@ def align_objects(alignment="center", align_by="origin", axis="x"):
         for obj in selected_objects:
             if align_by == "origin":
                 setattr(obj.location, axis, target_pos)
-            elif align_by == "bounding_box":
+            elif align_by in {"bounding_box", "mesh_bounds"}:
                 bounds_world = [obj.matrix_world @ mathutils.Vector(corner) for corner in obj.bound_box]
-                if axis == "x":
-                    min_pos = min([v.x for v in bounds_world])
-                    max_pos = max([v.x for v in bounds_world])
-                elif axis == "y":
-                    min_pos = min([v.y for v in bounds_world])
-                    max_pos = max([v.y for v in bounds_world])
-                elif axis == "z":
-                    min_pos = min([v.z for v in bounds_world])
-                    max_pos = max([v.z for v in bounds_world])
+                if align_by == "bounding_box":
+                    if axis == "x":
+                        min_pos = min([v.x for v in bounds_world])
+                        max_pos = max([v.x for v in bounds_world])
+                    elif axis == "y":
+                        min_pos = min([v.y for v in bounds_world])
+                        max_pos = max([v.y for v in bounds_world])
+                    elif axis == "z":
+                        min_pos = min([v.z for v in bounds_world])
+                        max_pos = max([v.z for v in bounds_world])
+                elif align_by == "mesh_bounds":
+                    vertices = [obj.matrix_world @ v.co for v in obj.data.vertices]
+                    if axis == "x":
+                        min_pos = min([v.x for v in vertices])
+                        max_pos = max([v.x for v in vertices])
+                    elif axis == "y":
+                        min_pos = min([v.y for v in vertices])
+                        max_pos = max([v.y for v in vertices])
+                    elif axis == "z":
+                        min_pos = min([v.z for v in vertices])
+                        max_pos = max([v.z for v in vertices])
                 obj_center = (min_pos + max_pos) / 2 if alignment == "center" else min_pos if alignment == "min" else max_pos
                 offset = target_pos - obj_center
                 setattr(obj.location, axis, getattr(obj.location, axis) + offset)
