@@ -31,10 +31,10 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_category = 'Item'
  
-    @classmethod
-    def poll(cls, context):
-        if context.object.type in {'MESH', 'CURVE', 'FONT', 'SURFACE', 'LATTICE'}:
-            return True
+    # @classmethod
+    # def poll(cls, context):
+    #     if context.object.type in {'MESH', 'CURVE', 'FONT', 'SURFACE', 'LATTICE'}:
+    #         return True
 
     def draw(self,context):
         layout = self.layout
