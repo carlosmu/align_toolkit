@@ -1,20 +1,29 @@
 import bpy
+import os
 from . import ui_icons
 
-# Assign variables to icons
-align_center = ui_icons.addon_icons["align_center"].icon_id
-align_left = ui_icons.addon_icons["align_left"].icon_id
-align_right = ui_icons.addon_icons["align_right"].icon_id
+# Función para asignar íconos después de la carga
+def assign_icons():
+    global align_center, align_left, align_right
+    global align_center_Z, align_left_Z, align_right_Z
+    global distribute, distribute_Z
 
-align_center_Z = ui_icons.addon_icons["align_center_Z"].icon_id
-align_left_Z = ui_icons.addon_icons["align_left_Z"].icon_id
-align_right_Z = ui_icons.addon_icons["align_right_Z"].icon_id
+    if ui_icons.addon_icons:
+        align_center = ui_icons.addon_icons["align_center"].icon_id
+        align_left = ui_icons.addon_icons["align_left"].icon_id
+        align_right = ui_icons.addon_icons["align_right"].icon_id
 
-distribute = ui_icons.addon_icons["distribute"].icon_id
-distribute_Z = ui_icons.addon_icons["distribute_Z"].icon_id
+        align_center_Z = ui_icons.addon_icons["align_center_Z"].icon_id
+        align_left_Z = ui_icons.addon_icons["align_left_Z"].icon_id
+        align_right_Z = ui_icons.addon_icons["align_right_Z"].icon_id
+
+        distribute = ui_icons.addon_icons["distribute"].icon_id
+        distribute_Z = ui_icons.addon_icons["distribute_Z"].icon_id
+    else:
+        raise RuntimeError("addon_icons is not initialized")
+
 
 # Panel class
-
 class ALI_PT_Alignator_3D(bpy.types.Panel):
     bl_label = "Align Toolkit"
     bl_idname = "ALI_PT_Alignator_3D"
@@ -69,11 +78,11 @@ def popover_contextmenu(self, context):
     layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
     layout.separator()
 
-
 ##############################################
 # REGISTER/UNREGISTER
 ##############################################
 def register():
+    assign_icons()
     bpy.utils.register_class(ALI_PT_Alignator_3D)
     bpy.types.VIEW3D_MT_editor_menus.append(popover_contextmenu)
     

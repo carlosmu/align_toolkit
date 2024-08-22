@@ -37,13 +37,13 @@ bl_info = {
 # REGISTER/UNREGISTER
 ####################################
 def register():
+    ui_icons.load_icons()
     ot_alignator_3d.register()
     ot_distributor_3d.register()
     ui_pt_alignator_3d.register()
-    ui_icons.register()
 
 def unregister():
+    ui_icons.unload_icons()
     ot_alignator_3d.unregister()
     ot_distributor_3d.unregister()
     ui_pt_alignator_3d.unregister()
-    ui_icons.unregister()
