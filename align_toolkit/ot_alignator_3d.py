@@ -26,25 +26,36 @@ class ALI_OT_align_3d(bpy.types.Operator):
         if (context.area.ui_type == 'VIEW_3D'):
             return True
 
+
     def execute(self, context):
+        # align_method = "origin"
+        # align_method = "bounding_box"
+        align_method = "mesh_bounds"
+
+        target_method = "3d_cursor"
+        # target_method = "active_object"
+        # target_method = "selected_objects"
+
+
+        ###############
         if self.option == 'X_MINIMUM':
-            fn.align_objects(alignment="min",  align_by="mesh_bounds", axis="x")
+            fn.align_objects(alignment="min",  align_by=align_method, axis="x", align_target=target_method)
         elif self.option == 'X_CENTER':
-            fn.align_objects(alignment="center",  align_by="mesh_bounds", axis="x")
+            fn.align_objects(alignment="center",  align_by=align_method, axis="x", align_target=target_method)
         elif self.option == 'X_MAXIMUM':
-            fn.align_objects(alignment="max",  align_by="mesh_bounds", axis="x")
+            fn.align_objects(alignment="max",  align_by=align_method, axis="x", align_target=target_method)
         elif self.option == 'Y_MINIMUM':
-            fn.align_objects(alignment="min",  align_by="mesh_bounds", axis="y")
+            fn.align_objects(alignment="min",  align_by=align_method, axis="y", align_target=target_method)
         elif self.option == 'Y_CENTER':
-            fn.align_objects(alignment="center",  align_by="mesh_bounds", axis="y")
+            fn.align_objects(alignment="center",  align_by=align_method, axis="y", align_target=target_method)
         elif self.option == 'Y_MAXIMUM':
-            fn.align_objects(alignment="max",  align_by="mesh_bounds", axis="y")
+            fn.align_objects(alignment="max",  align_by=align_method, axis="y", align_target=target_method)
         elif self.option == 'Z_MINIMUM':
-            fn.align_objects(alignment="min",  align_by="mesh_bounds", axis="z")
+            fn.align_objects(alignment="min",  align_by=align_method, axis="z", align_target=target_method)
         elif self.option == 'Z_CENTER':
-            fn.align_objects(alignment="center",  align_by="mesh_bounds", axis="z")
+            fn.align_objects(alignment="center",  align_by=align_method, axis="z", align_target=target_method)
         else:
-            fn.align_objects(alignment="max",  align_by="mesh_bounds", axis="z")
+            fn.align_objects(alignment="max",  align_by=align_method, axis="z", align_target=target_method)
         
         return{'FINISHED'}
 
