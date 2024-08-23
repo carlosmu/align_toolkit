@@ -22,13 +22,19 @@ class ALI_OT_distribute_3d(bpy.types.Operator):
             return True
 
     def execute(self, context):
+        align_tool = context.scene.align_tool
+
+        align_method = align_tool.align_by
+        # target_method = align_tool.align_target
+
+
         if self.option == 'X':
-            fn.distribute_objects(axis="x", distribute_by="origin")
+            fn.distribute_objects(axis="x", distribute_by=align_method)
         elif self.option == 'Y':
-            fn.distribute_objects(axis="y", distribute_by="origin")
+            fn.distribute_objects(axis="y", distribute_by=align_method)
         else:
-            fn.distribute_objects(axis="z", distribute_by="origin")        
-            
+            fn.distribute_objects(axis="z", distribute_by=align_method)
+         
         return{'FINISHED'}
 
 ##############################################

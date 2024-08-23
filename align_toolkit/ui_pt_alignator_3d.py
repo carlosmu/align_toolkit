@@ -68,8 +68,16 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
         align_tool = scene.align_tool
 
         col = layout.column(align=True)
-        col.prop(align_tool, "align_by", text="Align by")
-        col.prop(align_tool, "align_target", text="Target")
+        col.label(text="Align / Distribute by:")
+        col.prop(align_tool, "align_by", text="")
+
+        col = layout.column(align=True)
+        col.label(text="Align target:")
+        col.prop(align_tool, "align_target", text="")
+
+        # col = layout.column(align=True)
+        # col.prop(align_tool, "align_by", text="Align/Distribute by")
+        # col.prop(align_tool, "align_target", text="Target")
         
         # layout.separator()
         layout.label(text="Align Objects:")
