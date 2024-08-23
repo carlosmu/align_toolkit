@@ -28,14 +28,10 @@ class ALI_OT_align_3d(bpy.types.Operator):
 
 
     def execute(self, context):
-        # align_method = "origin"
-        # align_method = "bounding_box"
-        align_method = "mesh_bounds"
+        align_tool = context.scene.align_tool
 
-        target_method = "3d_cursor"
-        # target_method = "active_object"
-        # target_method = "selected_objects"
-
+        align_method = align_tool.align_by
+        target_method = align_tool.align_target
 
         ###############
         if self.option == 'X_MINIMUM':

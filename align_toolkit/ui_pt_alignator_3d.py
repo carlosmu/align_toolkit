@@ -22,6 +22,29 @@ def assign_icons():
     else:
         raise RuntimeError("addon_icons is not initialized")
 
+class align_properties(bpy.types.PropertyGroup):
+    align_by: bpy.props.EnumProperty( 
+        name="Align By",
+        description="Choose align by method",
+        items=[
+            ('origin', "Origin", "Align by object origin"),
+            ('bounding_box', "Bounding Box", "Align by bounding box (Fast)"),
+            ('mesh_bounds', "Mesh Bounds", "Align by mesh bounds (Precise)")
+        ],
+        default='mesh_bounds'
+    ) 
+    
+    align_target: bpy.props.EnumProperty(
+        name="Align Target",
+        description="Choose target",
+        items=[
+            ('selected_objects', "Selected Objects", "Align by selected objects"),
+            ('active_object', "Active Object", "Align by active object"),
+            ('3d_cursor', "3D Cursor", "Align by 3D cursor")
+        ],
+        default='selected_objects'
+    )
+
 
 # Panel class
 class ALI_PT_Alignator_3D(bpy.types.Panel):
@@ -37,33 +60,42 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
     #         return True
 
     def draw(self,context):
+        scene = context.scene
         layout = self.layout
+        layout.use_property_split = True
+        layout.use_property_decorate = False
+
+        align_tool = scene.align_tool
+
+        
+        col = layout.column(align=True)
+        col.prop(align_tool, "align_by", text="Align by")
+        col.prop(align_tool, "align_target", text="Target")
+        
+        layout.separator()
         layout.label(text="Align Objects:")
         row = layout.row(align=True)
+        row.label(text="X")
         row.scale_x = 2.0
         row.operator("alignator.alignator_3d", text="", icon_value=align_left).option = 'X_MINIMUM'
         row.operator("alignator.alignator_3d", text="", icon_value=align_center).option = 'X_CENTER'
         row.operator("alignator.alignator_3d", text="", icon_value=align_right).option = 'X_MAXIMUM'
-        row.separator()
-        row.label(text="X")
         
         row = layout.row(align=True)
+        row.label(text="Y")
         row.scale_x = 2.0
         row.operator("alignator.alignator_3d", text="", icon_value=align_left).option = 'Y_MINIMUM'
         row.operator("alignator.alignator_3d", text="", icon_value=align_center).option = 'Y_CENTER'
         row.operator("alignator.alignator_3d", text="", icon_value=align_right).option = 'Y_MAXIMUM'
-        row.separator()
-        row.label(text="Y")
 
         row = layout.row(align=True)
+        row.label(text="Z")
         row.scale_x = 2.0
         row.operator("alignator.alignator_3d", text="", icon_value=align_left_Z).option = 'Z_MINIMUM'
         row.operator("alignator.alignator_3d", text="", icon_value=align_center_Z).option = 'Z_CENTER'
         row.operator("alignator.alignator_3d", text="", icon_value=align_right_Z).option = 'Z_MAXIMUM'
-        row.separator()
-        row.label(text="Z")
         
-        # layout.separator()
+        layout.separator()
         layout.label(text="Distribute Objects:")
         row = layout.row(align=False)
         row.operator("alignator.distribute_3d", text="X", icon_value=distribute).option = 'X'
@@ -90,12 +122,23 @@ def popover_tool_header(self, context):
 # REGISTER/UNREGISTER
 ##############################################
 def register():
+    # Icons assignation
     assign_icons()
+    # Properties
+    bpy.utils.register_class(align_properties)
+    bpy.types.Scene.align_tool = bpy.props.PointerProperty(type=align_properties)
+    # Panel
     bpy.utils.register_class(ALI_PT_Alignator_3D)
+    # Popovers
     bpy.types.VIEW3D_MT_editor_menus.append(popover_main_menu)
     bpy.types.VIEW3D_HT_tool_header.append(popover_tool_header)
     
 def unregister():
+    # Properties
+    bpy.utils.unregister_class(align_properties)
+    del bpy.types.Scene.align_tool
+    # Panel
     bpy.utils.unregister_class(ALI_PT_Alignator_3D)
+    # Poppovers
     bpy.types.VIEW3D_MT_editor_menus.remove(popover_main_menu)
     bpy.types.VIEW3D_HT_tool_header.remove(popover_tool_header)
