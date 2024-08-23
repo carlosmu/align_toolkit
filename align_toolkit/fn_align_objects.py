@@ -23,10 +23,15 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
             max_pos = max([v[axis_idx] for v in bounds_world])
             return min_pos if alignment == "min" else max_pos if alignment == "max" else (min_pos + max_pos) / 2
         elif align_by == "mesh_bounds":
-            vertices = [obj.matrix_world @ v.co for v in obj.data.vertices]
+            # Crear una copia evaluada del objeto con los modificadores aplicados
+            obj_eval = obj.evaluated_get(bpy.context.evaluated_depsgraph_get())
+            mesh = obj_eval.to_mesh()
+            vertices = [obj_eval.matrix_world @ v.co for v in mesh.vertices]
             axis_idx = "xyz".index(axis)
             min_pos = min([v[axis_idx] for v in vertices])
             max_pos = max([v[axis_idx] for v in vertices])
+            # Eliminar la malla temporal para liberar memoria
+            obj_eval.to_mesh_clear()
             return min_pos if alignment == "min" else max_pos if alignment == "max" else (min_pos + max_pos) / 2
         else:
             raise ValueError("align_by must be 'origin', 'bounding_box', or 'mesh_bounds'")
