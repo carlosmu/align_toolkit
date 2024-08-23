@@ -1,6 +1,12 @@
 import bpy
 import os
 from . import ui_icons
+# from . import ui_user_prefs.ALI_Preferences as ALI_Preferences
+
+from .ui_user_prefs import ALI_Preferences
+
+### Register preferences for use in properties
+bpy.utils.register_class(ALI_Preferences)
 
 # Función para asignar íconos después de la carga
 def assign_icons():
@@ -23,6 +29,8 @@ def assign_icons():
         raise RuntimeError("addon_icons is not initialized")
 
 class align_properties(bpy.types.PropertyGroup):
+    prefs = bpy.context.preferences.addons[__package__].preferences
+
     align_by: bpy.props.EnumProperty( 
         name="Align By",
         description="Choose align by method",
@@ -31,7 +39,7 @@ class align_properties(bpy.types.PropertyGroup):
             ('bounding_box', "Bounding Box (Fast)", "Align by bounding boxes of every object. Fast but imprecise", 'MESH_CUBE', 1),
             ('mesh_bounds', "Mesh Bounds (Precise)", "Align by mesh bounds of every object. Precise but slow in high density meshes", 'MESH_MONKEY', 2)
         ],
-        default='mesh_bounds'
+        default= prefs.default_align_by
     ) 
     
     align_target: bpy.props.EnumProperty(
@@ -42,7 +50,7 @@ class align_properties(bpy.types.PropertyGroup):
             ('active_object', "Active Object", "Align by active object", 'PIVOT_ACTIVE', 1),
             ('3d_cursor', "3D Cursor", "Align by 3D cursor", 'CURSOR', 2)
         ],
-        default='selected_objects'
+        default= prefs.default_align_target
     )
 
 
@@ -127,6 +135,10 @@ def popover_tool_header(self, context):
     prefs = bpy.context.preferences.addons[__package__].preferences
     if prefs.show_in_3dview_tool_header:
         self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
+
+
+### Unregister Preferences for use in main functionality
+bpy.utils.unregister_class(ALI_Preferences)
 
 ##############################################
 # REGISTER/UNREGISTER
