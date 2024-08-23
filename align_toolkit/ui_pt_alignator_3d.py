@@ -27,9 +27,9 @@ class align_properties(bpy.types.PropertyGroup):
         name="Align By",
         description="Choose align by method",
         items=[
-            ('origin', "Origin", "Align by object origin"),
-            ('bounding_box', "Bounding Box", "Align by bounding box (Fast)"),
-            ('mesh_bounds', "Mesh Bounds", "Align by mesh bounds (Precise)")
+            ('origin', "Origin", "Align by object origin", 'OBJECT_ORIGIN', 0),
+            ('bounding_box', "Bounding Box (Fast)", "Align by bounding boxes of every object. Fast but imprecise", 'MESH_CUBE', 1),
+            ('mesh_bounds', "Mesh Bounds (Precise)", "Align by mesh bounds of every object. Precise but slow in high density meshes", 'MESH_MONKEY', 2)
         ],
         default='mesh_bounds'
     ) 
@@ -38,9 +38,9 @@ class align_properties(bpy.types.PropertyGroup):
         name="Align Target",
         description="Choose target",
         items=[
-            ('selected_objects', "Selected Objects", "Align by selected objects"),
-            ('active_object', "Active Object", "Align by active object"),
-            ('3d_cursor', "3D Cursor", "Align by 3D cursor")
+            ('selected_objects', "Selected Objects", "Align by selected objects", 'PIVOT_MEDIAN', 0),
+            ('active_object', "Active Object", "Align by active object", 'PIVOT_ACTIVE', 1),
+            ('3d_cursor', "3D Cursor", "Align by 3D cursor", 'CURSOR', 2)
         ],
         default='selected_objects'
     )
@@ -67,14 +67,14 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
 
         align_tool = scene.align_tool
 
-        
         col = layout.column(align=True)
         col.prop(align_tool, "align_by", text="Align by")
         col.prop(align_tool, "align_target", text="Target")
         
-        layout.separator()
+        # layout.separator()
         layout.label(text="Align Objects:")
         row = layout.row(align=True)
+        row.separator()
         row.label(text="X")
         row.scale_x = 2.0
         row.operator("alignator.alignator_3d", text="", icon_value=align_left).option = 'X_MINIMUM'
@@ -82,6 +82,7 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
         row.operator("alignator.alignator_3d", text="", icon_value=align_right).option = 'X_MAXIMUM'
         
         row = layout.row(align=True)
+        row.separator()
         row.label(text="Y")
         row.scale_x = 2.0
         row.operator("alignator.alignator_3d", text="", icon_value=align_left).option = 'Y_MINIMUM'
@@ -89,6 +90,7 @@ class ALI_PT_Alignator_3D(bpy.types.Panel):
         row.operator("alignator.alignator_3d", text="", icon_value=align_right).option = 'Y_MAXIMUM'
 
         row = layout.row(align=True)
+        row.separator()
         row.label(text="Z")
         row.scale_x = 2.0
         row.operator("alignator.alignator_3d", text="", icon_value=align_left_Z).option = 'Z_MINIMUM'
