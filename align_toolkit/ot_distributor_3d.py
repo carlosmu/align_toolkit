@@ -24,7 +24,10 @@ class ALI_OT_distribute_3d(bpy.types.Operator):
     def execute(self, context):
         align_tool = context.scene.align_tool
 
-        align_method = align_tool.align_by
+        if align_tool.align_by == "mesh_bounds":
+            align_method = "bounding_box"
+        else:
+            align_method = align_tool.align_by
         # target_method = align_tool.align_target
 
 
