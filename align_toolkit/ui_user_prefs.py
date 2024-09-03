@@ -18,7 +18,7 @@ class ALI_Preferences(bpy.types.AddonPreferences):
             ('bounding_box', "Bounding Box (Fast)", "Align by bounding boxes of every object. Fast but imprecise", 'MESH_CUBE', 1),
             ('mesh_bounds', "Mesh Bounds (Precise)", "Align by mesh bounds of every object. Precise but slow in high density meshes", 'MESH_MONKEY', 2)
         ],
-        default='mesh_bounds'
+        default='bounding_box'
     ) 
 
     default_align_target: bpy.props.EnumProperty(
