@@ -23,6 +23,11 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
             max_pos = max([v[axis_idx] for v in bounds_world])
             return min_pos if alignment == "min" else max_pos if alignment == "max" else (min_pos + max_pos) / 2
         elif align_by == "mesh_bounds":
+            # Comprobación adicional para tipos de objeto
+            if obj.type not in {"MESH", "CURVE", "SURFACE", "META", "FONT"}:
+                print(f"Skipping object '{obj.name}' as it is not a compatible type for 'mesh_bounds'.")
+                return None
+
             # Crear una copia evaluada del objeto con los modificadores aplicados
             obj_eval = obj.evaluated_get(bpy.context.evaluated_depsgraph_get())
             mesh = obj_eval.to_mesh()
@@ -44,6 +49,10 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
             target_pos = get_position(active_object, axis)
         elif align_target == "selected_objects":
             positions = [get_position(obj, axis) for obj in selected_objects]
+            positions = [pos for pos in positions if pos is not None]  # Filtrar objetos no compatibles
+            if not positions:
+                print("No valid objects to align")
+                return
             min_pos = min(positions)
             max_pos = max(positions)
             target_pos = min_pos if alignment == "min" else max_pos if alignment == "max" else (min_pos + max_pos) / 2
@@ -55,8 +64,9 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
                 setattr(obj.location, axis, target_pos)
             elif align_by in {"bounding_box", "mesh_bounds"}:
                 obj_center = get_position(obj, axis)
-                offset = target_pos - obj_center
-                setattr(obj.location, axis, getattr(obj.location, axis) + offset)
+                if obj_center is not None:  # Solo mover objetos válidos
+                    offset = target_pos - obj_center
+                    setattr(obj.location, axis, getattr(obj.location, axis) + offset)
     
     # Alinear en uno o varios ejes
     if axis in {"x", "y", "z"}:

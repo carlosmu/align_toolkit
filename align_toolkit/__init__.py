@@ -25,7 +25,7 @@ bl_info = {
     "name": "Align Toolkit",
     "author": "Carlos Mu <carlos.damian.munoz@gmail.com>",
     "blender": (3, 6, 0),
-    "version": (1, 1, 0),
+    "version": (1, 1, 1),
     "category": "Modeling",
     "location": "3D View Sidebar > Item Tab",
     "description": "Align and distribute selected objects",
