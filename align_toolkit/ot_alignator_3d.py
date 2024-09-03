@@ -35,23 +35,23 @@ class ALI_OT_align_3d(bpy.types.Operator):
 
         ###############
         if self.option == 'X_MINIMUM':
-            fn.align_objects(alignment="min",  align_by=align_method, axis="x", align_target=target_method)
+            fn.align_objects(self, alignment="min",  align_by=align_method, axis="x", align_target=target_method)
         elif self.option == 'X_CENTER':
-            fn.align_objects(alignment="center",  align_by=align_method, axis="x", align_target=target_method)
+            fn.align_objects(self, alignment="center",  align_by=align_method, axis="x", align_target=target_method)
         elif self.option == 'X_MAXIMUM':
-            fn.align_objects(alignment="max",  align_by=align_method, axis="x", align_target=target_method)
+            fn.align_objects(self, alignment="max",  align_by=align_method, axis="x", align_target=target_method)
         elif self.option == 'Y_MINIMUM':
-            fn.align_objects(alignment="min",  align_by=align_method, axis="y", align_target=target_method)
+            fn.align_objects(self, alignment="min",  align_by=align_method, axis="y", align_target=target_method)
         elif self.option == 'Y_CENTER':
-            fn.align_objects(alignment="center",  align_by=align_method, axis="y", align_target=target_method)
+            fn.align_objects(self, alignment="center",  align_by=align_method, axis="y", align_target=target_method)
         elif self.option == 'Y_MAXIMUM':
-            fn.align_objects(alignment="max",  align_by=align_method, axis="y", align_target=target_method)
+            fn.align_objects(self, alignment="max",  align_by=align_method, axis="y", align_target=target_method)
         elif self.option == 'Z_MINIMUM':
-            fn.align_objects(alignment="min",  align_by=align_method, axis="z", align_target=target_method)
+            fn.align_objects(self, alignment="min",  align_by=align_method, axis="z", align_target=target_method)
         elif self.option == 'Z_CENTER':
-            fn.align_objects(alignment="center",  align_by=align_method, axis="z", align_target=target_method)
+            fn.align_objects(self, alignment="center",  align_by=align_method, axis="z", align_target=target_method)
         else:
-            fn.align_objects(alignment="max",  align_by=align_method, axis="z", align_target=target_method)
+            fn.align_objects(self, alignment="max",  align_by=align_method, axis="z", align_target=target_method)
         
         return{'FINISHED'}
 

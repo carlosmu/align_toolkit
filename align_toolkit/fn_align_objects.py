@@ -1,7 +1,7 @@
 import bpy
 import mathutils
 
-def align_objects(alignment="center", align_by="origin", axis="x", align_target="selected_objects"):
+def align_objects(self, alignment="center", align_by="origin", axis="x", align_target="selected_objects"):
     # Obtener los objetos seleccionados
     selected_objects = bpy.context.selected_objects
     active_object = bpy.context.active_object
@@ -10,6 +10,8 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
     if not selected_objects:
         print("No objects selected")
         return
+
+    incompatible_objects = set()  # Usar un set para evitar duplicados
 
     # Función para obtener la posición en el eje especificado basado en el origen, bounding box, mesh bounds o cursor 3D
     def get_position(obj, axis):
@@ -25,7 +27,7 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
         elif align_by == "mesh_bounds":
             # Comprobación adicional para tipos de objeto
             if obj.type not in {"MESH", "CURVE", "SURFACE", "META", "FONT"}:
-                print(f"Skipping object '{obj.name}' as it is not a compatible type for 'mesh_bounds'.")
+                incompatible_objects.add(obj.name)  # Añadir al set
                 return None
 
             # Crear una copia evaluada del objeto con los modificadores aplicados
@@ -76,3 +78,9 @@ def align_objects(alignment="center", align_by="origin", axis="x", align_target=
             align_single_axis(ax)
     else:
         raise ValueError("Axis must be 'x', 'y', 'z', or 'xyz'")
+    
+    # Reportar si hubo objetos no compatibles
+    if incompatible_objects:
+        incompatible_list = ", ".join(incompatible_objects)
+        self.report({'INFO'}, 'Some objects are not compatible. More details in terminal.')
+        print(f"The following objects are not compatible and will be ignored: {incompatible_list}")
