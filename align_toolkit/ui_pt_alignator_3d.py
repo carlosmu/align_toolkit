@@ -126,15 +126,15 @@ def popover_main_menu(self, context):
     if prefs.show_in_3dview_main_menu:
         self.layout.separator()
         if context.area.show_menus:
-            self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
+            self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_right)
         else:
-            self.layout.popover("ALI_PT_Alignator_3D", text="Align Toolkit", icon_value=align_center)
+            self.layout.popover("ALI_PT_Alignator_3D", text="Align Toolkit", icon_value=align_right)
         self.layout.separator()
 
 def popover_tool_header(self, context):
     prefs = bpy.context.preferences.addons[__package__].preferences
     if prefs.show_in_3dview_tool_header:
-        self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_center)
+        self.layout.popover("ALI_PT_Alignator_3D", text="", icon_value=align_right)
 
 
 ### Unregister Preferences for use in main functionality
